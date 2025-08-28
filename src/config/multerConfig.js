@@ -9,6 +9,24 @@ export const s3uploader = multer({
     bucket: AWS_BUCKET_NAME,
     acl: "public-read",
     key: function (req, file, cb) {
+      if (!file) {
+        return cb(new Error("File not found"), null);
+      }
+      // check mimetype for jpg, jpeg, png
+      if (
+        !(
+          file.mimetype === "image/jpeg" ||
+          file.mimetype === "image/jpg" ||
+          file.mimetype === "image/png" ||
+          file.mimetype === "image/webp"
+        )
+      ) {
+        return cb(
+          new Error("Invalid file type, only jpg, jpeg, png, webp is allowed"),
+          null
+        );
+      }
+      console.log(file);
       const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
 
       cb(
