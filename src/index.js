@@ -2,6 +2,7 @@ import express from "express";
 import connectDB from "./config/dbConfig.js";
 import apiRouter from "./routers/apiRouter.js";
 import multer from "multer";
+import { isAuthenticated } from "./middleware/authMiddleware.js";
 
 const PORT = 3000; // port number
 
@@ -15,9 +16,10 @@ app.use(express.urlencoded()); // Middleware to parse URL-encoded request bodies
 
 app.use("/api", apiRouter); // If the request URL starts with /api, use apiRouter to handle it
 
-app.get("/ping", (req, res) => {
+app.get("/ping", isAuthenticated, (req, res) => {
   console.log(req.query);
   console.log(req.body);
+  console.log(req.user);
   return res.json({ message: "pong" });
 });
 
