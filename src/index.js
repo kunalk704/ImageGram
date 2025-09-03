@@ -16,7 +16,7 @@ app.use(express.urlencoded()); // Middleware to parse URL-encoded request bodies
 
 app.use("/api", apiRouter); // If the request URL starts with /api, use apiRouter to handle it
 
-app.get("/ping", isAuthenticated, (req, res) => {
+app.get("/ping", (req, res) => {
   console.log(req.query);
   console.log(req.body);
   console.log(req.user);
