@@ -3,6 +3,7 @@ import connectDB from "./config/dbConfig.js";
 import apiRouter from "./routers/apiRouter.js";
 import multer from "multer";
 import { isAuthenticated } from "./middleware/authMiddleware.js";
+import ip from "ip";
 
 const PORT = 3000; // port number
 
@@ -20,7 +21,8 @@ app.get("/ping", (req, res) => {
   console.log(req.query);
   console.log(req.body);
   console.log(req.user);
-  return res.json({ message: "pong" });
+  const ipAdd = ip.address();
+  return res.json({ message: "pong" + ipAdd });
 });
 
 app.listen(PORT, () => {

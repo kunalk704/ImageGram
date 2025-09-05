@@ -1,21 +1,29 @@
 import mongoose from "mongoose";
-const postSchema = new mongoose.Schema(
+import { minLength } from "zod";
+
+const commentSchema = new mongoose.Schema(
   {
-    caption: {
+    content: {
       type: String,
       required: true,
-      minLength: 5,
+      minLength: 1,
     },
-    image: {
-      type: String,
-      required: true,
-    },
-    user: {
+    userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
       required: true,
+      ref: "User",
     },
-    comments: [
+    onModel: {
+      type: String,
+      required: true,
+      enum: ["Post", "Comment"],
+    },
+    commentableId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      refPath: "onModel",
+    },
+    replies: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Comment",
@@ -30,5 +38,5 @@ const postSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-const Post = mongoose.model("Post", postSchema);
-export default Post;
+const Comment = mongoose.model("Comment", commentSchema);
+export default Comment;
